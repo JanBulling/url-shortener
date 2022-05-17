@@ -18,7 +18,7 @@ export default async(req: NextApiRequest, res: NextApiResponse) => {
             { shortened_url: queryParam },
             { $inc: { visited: 1 } },
             {
-                projection: {_id: 0, visits: 0, attempts: 0},
+                projection: {_id: 0, visited: 0, attempts: 0},
             }
         );
 
