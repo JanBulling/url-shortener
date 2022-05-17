@@ -1,7 +1,10 @@
 import { GetServerSideProps } from 'next'
 import Head from 'next/head'
+import { useState } from 'react'
 
 export default function Home() {
+  const [url, setUrl] = useState('');
+
   return (
     <>
       <Head>
@@ -11,7 +14,7 @@ export default function Home() {
       </Head>
 
       <main className="py-4">
-        
+        <h1>Hello</h1>
       </main>
     </>
   )
