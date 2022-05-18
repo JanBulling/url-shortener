@@ -14,12 +14,13 @@ export default async(req: NextApiRequest, res: NextApiResponse) => {
 
         let longUrl: string = "";
 
-        try {
-            const body = JSON.parse(req.body);
+
+        try {       
+            const body = JSON.parse(JSON.stringify(req.body));
 
             longUrl = body["url"] as string;
         } catch(e) {
-            res.status(400).json({ error: "Unable to convert post-payload" });
+            res.status(400).json({ error: "Unable to parse payload" });
             return;
         }
 

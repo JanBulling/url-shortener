@@ -20,7 +20,6 @@ export const getServerSideProps: GetServerSideProps =async ({ params }) => {
 
         const response = await fetch(
             "http://localhost:3000/api/long-url?short=" + shortUrl,
-            
         );
         const data = await response.json();
 
