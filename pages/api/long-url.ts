@@ -16,9 +16,9 @@ export default async(req: NextApiRequest, res: NextApiResponse) => {
 
         const data = await db.collection<ShortenedUrl>("url").findOneAndUpdate(
             { shortened_url: queryParam },
-            { $inc: { visited: 1 } },
+            { $inc: { visits: 1 } },
             {
-                projection: {_id: 0, visited: 0, attempts: 0},
+                projection: {_id: 0, visits: 0, attempts: 0},
             }
         );
 
