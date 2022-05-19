@@ -4,35 +4,16 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase } from "../../lib/connect_db";
 import ShortenedUrl from "../../lib/model/shortened_url";
 
-export default async(req: NextApiRequest, res: NextApiResponse) => {
+export const generateShortUrl = async(longUrl: string): Promise<ShortenedUrl | null> => {
     try {
+        const formattedLongUrl = formatUrl(longUrl);
 
-        if (req.method !== 'POST') {
-            res.status(405).send({ error: "Only 'POST' requests allowed" });
-            return;
-        }
-
-        let longUrl: string = "";
-
-
-        try {       
-            const body = JSON.parse(JSON.stringify(req.body));
-
-            longUrl = body["url"] as string;
-        } catch(e) {
-            res.status(400).json({ error: "Unable to parse payload" });
-            return;
-        }
-
-        const formattedUrl = formatUrl(longUrl);
-        
-        if (!formattedUrl) {
-            res.status(400).json({ error: `Url '${longUrl}' is not a valid url.` });
-            return;
+        if (!formattedLongUrl) {
+            return null;
         }
 
         // the given url is hashed and then formatted in base62
-        const hash = md5(formattedUrl);
+        const hash = md5(formattedLongUrl);
         const encoded = encodeBase62(hash);
 
         // connect to database
@@ -60,15 +41,20 @@ export default async(req: NextApiRequest, res: NextApiResponse) => {
                 break;
             }
 
-            if (existing.url === formattedUrl) {
+            if (existing.url === formattedLongUrl) {
                 await collection.updateOne(
                     { shortened_url: shortUrl },
                     { $inc: { attempts: 1 } },
                 )
 
-                res.status(200).json(JSON.parse(JSON.stringify(existing)));
+                const paresdData = <ShortenedUrl>{
+                    url: existing.url,
+                    shortened_url: existing.shortened_url, 
+                    attempts: -1, 
+                    visits: -1
+                }
 
-                return;
+                return paresdData;
             }
         }
 
@@ -77,7 +63,7 @@ export default async(req: NextApiRequest, res: NextApiResponse) => {
 
         const shortenedUrl: ShortenedUrl = {
             shortened_url: shortUrl,
-            url: formattedUrl,
+            url: formattedLongUrl,
             visits: 0,
             attempts: 1,
         };
@@ -91,11 +77,46 @@ export default async(req: NextApiRequest, res: NextApiResponse) => {
             }
         );
 
-        res.status(200).json(JSON.parse(JSON.stringify(data)));
-        
+        if (!data) {
+            return null;
+        }
 
+        const paresdData = <ShortenedUrl>{
+            url: data.url,
+            shortened_url: data.shortened_url, 
+            attempts: -1, 
+            visits: -1
+        }
+
+        return paresdData;
+    } catch(err) {
+        return null;
+    }
+}
+
+export default async(req: NextApiRequest, res: NextApiResponse) => {
+    if (req.method !== 'POST') {
+        res.status(405).send({ error: "Only 'POST' requests allowed" });
+        return;
+    }
+
+    let longUrl: string = "";
+
+    try {       
+        const body = JSON.parse(JSON.stringify(req.body));
+
+        longUrl = body["url"] as string;
     } catch(e) {
-        res.status(500).json({error: e });
+        res.status(400).json({ error: "Unable to parse payload" });
+        return;
+    }
+
+    const data = await generateShortUrl(longUrl);
+
+    if (data) {
+        res.status(200).json({url: data.url, shortened_url: data.shortened_url});
+    } else {
+        res.status(500).json({error: "Something went wrong"});
     }
 }
 

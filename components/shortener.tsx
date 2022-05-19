@@ -1,6 +1,8 @@
 import { getCookie, setCookies } from "cookies-next";
 import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
+import CopyToClipboard from "react-copy-to-clipboard";
+
 
 interface ShortUrl {
     url: string,
@@ -12,6 +14,7 @@ export default function Shortener() {
     const [shortUrls, setShortUrls] = useState<ShortUrl[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [copying, setCopying] = useState("");
 
     const submitUrl = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -58,7 +61,6 @@ export default function Shortener() {
             setError("Something went wrong.");
         }
 
-
         setLoading(false);
     };
 
@@ -78,22 +80,29 @@ export default function Shortener() {
         }
     }, [error])
 
+    useEffect(() => {
+        if (copying) {
+            setTimeout(() => {
+                setCopying("");
+            }, 3000);
+        }
+    }, [copying])
+
     return (
         <div className="bg-blue-900 py-4 px-10">
             <div className="max-w-4xl mx-auto">
                 <form action="submit" onSubmit={(e) => submitUrl(e)} 
                     className="flex-grow flex flex-col md:flex-row justify-between">
-                    <label htmlFor="url">
-                        <input type="text" 
+                    <label htmlFor="url"></label>
+                    <input type="text" 
                             value={input}
                             placeholder="Shorten link"
                             onChange={(e) => setInput(e.target.value)}
                             className="p-3 rounded-xl border-0 w-full"
                         />
-                    </label>
                     <button 
                         disabled={loading}
-                        className="bg-blue-700 text-white rounded-xl mt-2 md:mt-0 px-5 py-3 font-semibold text-lg hover:bg-blue-600"
+                        className="bg-blue-700 text-white rounded-xl mt-2 ml-5 md:mt-0 px-5 py-3 font-semibold text-lg hover:bg-blue-600"
                         formAction="submit">{!loading ? "Shorten" : "Loading..."}</button>
                 </form>
                 <p className="mt-2 text-gray-400 text-sm">By clicking SHORTEN, we will generate a short version of the given url</p>
@@ -112,7 +121,20 @@ export default function Shortener() {
                                     <Link href={"http://localhost:3000/" + e.shortUrl}>
                                         <a className="text-blue-500">{"http://localhost:3000/" + e.shortUrl}</a>
                                     </Link>
-                                    <button className="bg-blue-700 text-white font-semibold ml-10 px-3 py-2 rounded-xl hover:bg-blue-600">Copy</button>
+                                    <CopyToClipboard
+                                        text={"http://localhost:3000/" + e.shortUrl}
+                                        options={{
+                                            format: "text/plain",
+                                        }}
+                                        >
+                                        <button 
+                                            className={"text-white font-semibold ml-10 px-3 py-2 rounded-xl " + 
+                                                (copying == e.shortUrl ? "bg-green-600 hover:bg-green-600" : "bg-blue-700 hover:bg-blue-600")}
+                                            onClick={() => setCopying(e.shortUrl)}
+                                            >
+                                            Copy
+                                        </button>
+                                    </CopyToClipboard>
                                 </div>
                             </div>
                         ))

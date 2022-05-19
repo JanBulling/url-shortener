@@ -2,7 +2,12 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase } from "../../lib/connect_db";
 import ShortenedUrl from "../../lib/model/shortened_url";
 
-export default async(req: NextApiRequest, res: NextApiResponse) => {
+interface PopularUrls {
+    mostVisited: ShortenedUrl[],
+    mostAttemps: ShortenedUrl[],
+}
+
+export const getPopular = async(): Promise<PopularUrls | null> => {
     try {
         const { db } = await connectToDatabase();
 
@@ -18,13 +23,39 @@ export default async(req: NextApiRequest, res: NextApiResponse) => {
             .sort({attempts: -1})
             .limit(10).toArray();
         
-        const jsonResponse = {
-            mostVisited: JSON.parse(JSON.stringify(mostVisitedData)), 
-            mostAttemps: JSON.parse(JSON.stringify(mostAttemptsData))
-        };
+        const parsedMostVisited = mostVisitedData.map((data) => <ShortenedUrl>{
+           url: data.url,  
+           shortened_url: data.shortened_url, 
+           attempts: data.attempts, 
+           visits: data.visits
+        });
 
+        const paresdAttemps = mostAttemptsData.map((data) => <ShortenedUrl>{
+            url: data.url,  
+            shortened_url: data.shortened_url, 
+            attempts: data.attempts, 
+            visits: data.visits
+        });
+
+        return <PopularUrls>{
+            mostVisited: parsedMostVisited,
+            mostAttemps: paresdAttemps
+        }
+    } catch(err) {
+        return null;
+    }
+}
+
+export default async(req: NextApiRequest, res: NextApiResponse) => {
+    const data = await getPopular();
+
+    if (data) {
+        const jsonResponse = {
+            mostVisited: JSON.parse(JSON.stringify(data.mostVisited)), 
+            mostAttemps: JSON.parse(JSON.stringify(data.mostAttemps))
+        };
         res.status(200).json(jsonResponse);
-    } catch(e) {
-        res.status(500).json({error: e});
+    } else {
+        res.status(500).json({error: "Something went wrong"});
     }
 }

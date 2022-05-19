@@ -2,20 +2,12 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase } from "../../lib/connect_db";
 import ShortenedUrl from "../../lib/model/shortened_url";
 
-export default async(req: NextApiRequest, res: NextApiResponse) => {
+export const getLongUrl = async (shortUrl: string): Promise<ShortenedUrl | null> => {
     try {
-        // the short url is passed as an query parameter to this endpoint
-        const queryParam = req.query.short as string;
-
-        if (!queryParam) {
-            res.status(400).json({error: `No short-url given`});
-            return;
-        }
-
         const { db } = await connectToDatabase();
 
         const data = await db.collection<ShortenedUrl>("url").findOneAndUpdate(
-            { shortened_url: queryParam },
+            { shortened_url: shortUrl },
             { $inc: { visits: 1 } },
             {
                 projection: {_id: 0, visits: 0, attempts: 0},
@@ -23,12 +15,35 @@ export default async(req: NextApiRequest, res: NextApiResponse) => {
         );
 
         if (!data || !data.value) {
-            res.status(400).json({error: `The short-url '${queryParam}' does not exist!`});
-            return;
+            return null;
         }
-        
-        res.status(200).json(JSON.parse(JSON.stringify(data.value)));
-    } catch(e) {
-        res.status(500).json({error: e});
+
+        const paresdData = <ShortenedUrl>{
+            url: data.value.url,
+            shortened_url: data.value.shortened_url, 
+            attempts: -1, 
+            visits: -1
+        }
+
+        return paresdData;
+    } catch(err) {
+        return null;
+    }
+}
+
+export default async(req: NextApiRequest, res: NextApiResponse) => {
+    const queryParam = req.query.short as string;
+
+    if (!queryParam) {
+        res.status(400).json({error: `No short-url given`});
+        return;
+    }
+
+    const data = await getLongUrl(queryParam);
+
+    if (data) {
+        res.status(200).json({url: data.url, shortened_url: data.shortened_url});
+    } else {
+        res.status(400).json({error: `The short-url '${queryParam}' does not exist!`});
     }
 }

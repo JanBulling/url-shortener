@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Shortener from '../components/shortener';
 import Stats from '../components/stats';
 import ShortenedUrl from '../lib/model/shortened_url';
+import { getPopular } from './api/popular';
 
 interface HomeProps {
   mostVisited: ShortenedUrl[],
@@ -34,22 +35,18 @@ export default function Home(props: HomeProps) {
 }
 
 export const getServerSideProps: GetServerSideProps<HomeProps> = async(context) => {
-  try {
 
-    const response = await fetch("http://localhost:3000/api/popular");
-    const data = await response.json();
+  const popular = await getPopular();
 
-    const mostVisited = data["mostVisited"] as ShortenedUrl[];
-    const mostAttemps = data["mostAttemps"] as ShortenedUrl[];
-
-    return {
-      props: {mostVisited: mostVisited, mostAttemps: mostAttemps}
+    if (popular) {
+      return {
+        props: {mostVisited: popular.mostVisited, mostAttemps: popular.mostAttemps}
+      }
+    } else {
+      return {
+        props: {mostVisited: [], mostAttemps: []}
+      }
     }
-  } catch(e) {
-    console.log(e);
+    
 
-    return {
-      props: {mostVisited: [], mostAttemps: []}
-    }
-  }
 }
