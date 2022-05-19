@@ -15,9 +15,8 @@ export default function Stats({
         <div className="py-4 px-10">
             <div className="max-w-4xl mx-auto">
                 
+                <h2 className="text-xl font-semibold my-2">Most Visited Links</h2>
                 <div className="overflow-x-auto">
-                    <h2 className="text-xl font-semibold my-2">Most Visited Links</h2>
-
                     <table className="w-full table-auto overflow-scroll text-sm whitespace-nowrap text-gray-500">
                         <thead className="text-sm text-black uppercase bg-gray-200">
                             <tr>
@@ -34,8 +33,8 @@ export default function Stats({
                         </thead>
                         <tbody>
                             {
-                                mostVisited.map((e) => (
-                                    <tr className="bg-white border-b-2">
+                                mostVisited.map((e, i) => (
+                                    <tr key={i} className="bg-white border-b-2">
                                         <td scope="row" className="px-6 py-4 text-ellipsis whitespace-nowrap overflow-hidden text-left max-w-md">
                                             {e.url}
                                         </td>
@@ -54,9 +53,8 @@ export default function Stats({
                     </table>
                 </div>
 
+                <h2 className="text-xl font-semibold mt-10 mb-2">Most Shortened Links</h2>
                 <div className="overflow-x-auto">
-                    <h2 className="text-xl font-semibold mt-10 mb-2">Most Shortened Links</h2>
-
                     <table className="w-full table-auto overflow-hidden text-sm whitespace-nowrap text-gray-500">
                         <thead className="text-sm text-black uppercase text-left bg-gray-200">
                             <tr>
@@ -73,8 +71,8 @@ export default function Stats({
                         </thead>
                         <tbody>
                             {
-                                mostAttemps.map((e) => (
-                                    <tr className="bg-white border-b-2">
+                                mostAttemps.map((e, i) => (
+                                    <tr key={i} className="bg-white border-b-2">
                                         <td scope="row" className="px-6 py-4 text-ellipsis whitespace-nowrap overflow-hidden text-left max-w-md">
                                             {e.url}
                                         </td>

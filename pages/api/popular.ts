@@ -16,12 +16,12 @@ export const getPopular = async(): Promise<PopularUrls | null> => {
         const mostVisitedData = await collection
             .find({}, { projection: {_id: 0} })
             .sort({visits: -1})
-            .limit(10).toArray();
+            .limit(6).toArray();
 
         const mostAttemptsData = await collection
             .find({}, { projection: {_id: 0} })
             .sort({attempts: -1})
-            .limit(10).toArray();
+            .limit(6).toArray();
         
         const parsedMostVisited = mostVisitedData.map((data) => <ShortenedUrl>{
            url: data.url,  

@@ -41,9 +41,11 @@ export default function Shortener() {
                 };
 
                 // limit last urls to a maximum of 5
-                if (shortUrls.length >= 5) {
+                while (shortUrls.length >= 5) {
                     shortUrls.pop();
                 }
+
+                console.log(shortUrls)
 
                 const shortUrlsList = [shortUrlData, ...shortUrls];
             
@@ -102,7 +104,7 @@ export default function Shortener() {
                         />
                     <button 
                         disabled={loading}
-                        className="bg-blue-700 text-white rounded-xl mt-2 ml-5 md:mt-0 px-5 py-3 font-semibold text-lg hover:bg-blue-600"
+                        className="bg-blue-700 text-white rounded-xl mt-2 md:ml-5 md:mt-0 px-5 py-3 font-semibold text-lg hover:bg-blue-600"
                         formAction="submit">{!loading ? "Shorten" : "Loading..."}</button>
                 </form>
                 <p className="mt-2 text-gray-400 text-sm">By clicking SHORTEN, we will generate a short version of the given url</p>
@@ -114,12 +116,12 @@ export default function Shortener() {
                 }
                 <div className="bg-white rounded-xl mt-5 m-auto">
                     {
-                        shortUrls.map((e) => (
-                            <div key={e.shortUrl} className="flex justify-between items-center p-3">
+                        shortUrls.map((e, i) => (
+                            <div key={i} className="flex justify-between items-center p-3">
                                 <p className="text-gray-400 text-sm text-ellipsis whitespace-nowrap overflow-hidden mx-3">{e.url}</p>
                                 <div className="flex items-center">
                                     <Link href={"http://localhost:3000/" + e.shortUrl}>
-                                        <a className="text-blue-500">{"http://localhost:3000/" + e.shortUrl}</a>
+                                        <a className="text-blue-500">{e.shortUrl}</a>
                                     </Link>
                                     <CopyToClipboard
                                         text={"http://localhost:3000/" + e.shortUrl}
