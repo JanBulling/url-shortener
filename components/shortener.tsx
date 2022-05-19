@@ -23,7 +23,7 @@ export default function Shortener() {
 
         try {
             const response = await fetch(
-                "http://localhost:3000/api/shorten-url",
+                "https://url-shortener-jan-bulling.vercel.app/api/shorten-url",
                 {
                     method: "POST",
                     headers: {
@@ -120,11 +120,11 @@ export default function Shortener() {
                             <div key={i} className="flex justify-between items-center p-3">
                                 <p className="text-gray-400 text-sm text-ellipsis whitespace-nowrap overflow-hidden mx-3">{e.url}</p>
                                 <div className="flex items-center">
-                                    <Link href={"http://localhost:3000/" + e.shortUrl}>
+                                    <Link href={"https://url-shortener-jan-bulling.vercel.app/" + e.shortUrl}>
                                         <a className="text-blue-500">{e.shortUrl}</a>
                                     </Link>
                                     <CopyToClipboard
-                                        text={"http://localhost:3000/" + e.shortUrl}
+                                        text={"https://url-shortener-jan-bulling.vercel.app/" + e.shortUrl}
                                         options={{
                                             format: "text/plain",
                                         }}

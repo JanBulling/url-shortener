@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase } from "../../lib/connect_db";
 import ShortenedUrl from "../../lib/model/shortened_url";
 
-export const getAllUrls = async (): Promise<ShortenedUrl[] | unknown> => {
+export const getAllUrls = async (): Promise<ShortenedUrl[] | null> => {
     try {
         const { db } = await connectToDatabase();
 
@@ -17,7 +17,7 @@ export const getAllUrls = async (): Promise<ShortenedUrl[] | unknown> => {
 
         return paresdData;
     } catch(err) {
-        return err;
+        return null;
     }
 }
 
