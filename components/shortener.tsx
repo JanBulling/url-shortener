@@ -119,7 +119,7 @@ export default function Shortener() {
                             <div key={i} className="flex justify-between items-center p-3">
                                 <p className="text-gray-400 text-sm text-ellipsis whitespace-nowrap overflow-hidden mx-3">{e.url}</p>
                                 <div className="flex items-center">
-                                    <Link href={"https://url-shortener-jan-bulling.vercel.app/" + e.shortUrl}>
+                                    <Link href={"/" + e.shortUrl}>
                                         <a className="text-blue-500">{e.shortUrl}</a>
                                     </Link>
                                     <CopyToClipboard

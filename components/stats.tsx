@@ -39,7 +39,7 @@ export default function Stats({
                                             {e.url}
                                         </td>
                                         <td className="px-6 py-4 text-center">
-                                            <Link href={"https://url-shortener-jan-bulling.vercel.app/" + e.shortened_url}>
+                                            <Link href={"/" + e.shortened_url}>
                                                 <a className="text-blue-600">{e.shortened_url}</a>
                                             </Link>
                                         </td>
@@ -77,7 +77,7 @@ export default function Stats({
                                             {e.url}
                                         </td>
                                         <td className="px-6 py-4 text-center">
-                                            <Link href={"https://url-shortener-jan-bulling.vercel.app/" + e.shortened_url}>
+                                            <Link href={"/" + e.shortened_url}>
                                                 <a className="text-blue-600">{e.shortened_url}</a>
                                             </Link>
                                         </td>

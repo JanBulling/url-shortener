@@ -1,5 +1,6 @@
 import { GetServerSideProps } from 'next'
 import Head from 'next/head'
+import Link from 'next/link';
 import Shortener from '../components/shortener';
 import Stats from '../components/stats';
 import ShortenedUrl from '../lib/model/shortened_url';
@@ -26,7 +27,9 @@ export default function Home(props: HomeProps) {
 
         <div className='my-5 px-10 mx-auto flex lg:flex-row flex-col max-w-4x'>
           <p className='mr-2'>You can reach your shortened url at </p>
-          <a href='/' className='text-blue-600 hover:cursor-pointer font-semibold'>https://url-shortener-jan-bulling.vercel.app/[SHORT-URL]</a>
+          <Link href='/'>
+            <a className='text-blue-600 hover:cursor-pointer font-semibold'>https://url-shortener-jan-bulling.vercel.app/[SHORT-URL]</a>
+          </Link>
         </div>
 
         <Stats 

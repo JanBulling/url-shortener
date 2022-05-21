@@ -122,6 +122,7 @@ export default async(req: NextApiRequest, res: NextApiResponse) => {
 
 function formatUrl(url: string): string | null {
     // basic checks, if the given string is an url
+    url = url.trim();
     if (!url.startsWith("http://") && !url.startsWith("https://")) {
         url = "http://" + url;
     }
