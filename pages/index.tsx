@@ -47,6 +47,4 @@ export const getServerSideProps: GetServerSideProps<HomeProps> = async(context) 
         props: {mostVisited: [], mostAttemps: []}
       }
     }
-    
-
 }
