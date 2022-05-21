@@ -24,6 +24,11 @@ export default function Home(props: HomeProps) {
         
         <Shortener />
 
+        <div className='my-5 px-10 mx-auto flex lg:flex-row flex-col max-w-4x'>
+          <p className='mr-2'>You can reach your shortened url at </p>
+          <a href='/' className='text-blue-600 hover:cursor-pointer font-semibold'>https://url-shortener-jan-bulling.vercel.app/[SHORT-URL]</a>
+        </div>
+
         <Stats 
           mostVisited={props.mostVisited}
           mostAttemps={props.mostAttemps}

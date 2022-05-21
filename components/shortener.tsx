@@ -3,7 +3,6 @@ import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 
-
 interface ShortUrl {
     url: string,
     shortUrl: string,
@@ -14,7 +13,7 @@ export default function Shortener() {
     const [shortUrls, setShortUrls] = useState<ShortUrl[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [copying, setCopying] = useState("");
+    const [copying, setCopying] = useState<number[]>([]);
 
     const submitUrl = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -23,7 +22,7 @@ export default function Shortener() {
 
         try {
             const response = await fetch(
-                "https://url-shortener-jan-bulling.vercel.app/api/shorten-url",
+                "/api/shorten-url",
                 {
                     method: "POST",
                     headers: {
@@ -83,9 +82,9 @@ export default function Shortener() {
     }, [error])
 
     useEffect(() => {
-        if (copying) {
+        if (copying.length > 0) {
             setTimeout(() => {
-                setCopying("");
+                setCopying([]);
             }, 3000);
         }
     }, [copying])
@@ -131,8 +130,8 @@ export default function Shortener() {
                                         >
                                         <button 
                                             className={"text-white font-semibold ml-10 px-3 py-2 rounded-xl " + 
-                                                (copying == e.shortUrl ? "bg-green-600 hover:bg-green-600" : "bg-blue-700 hover:bg-blue-600")}
-                                            onClick={() => setCopying(e.shortUrl)}
+                                                (copying.includes(i) ? "bg-green-600 hover:bg-green-600" : "bg-blue-700 hover:bg-blue-600")}
+                                            onClick={() => setCopying([...copying, i])}
                                             >
                                             Copy
                                         </button>
