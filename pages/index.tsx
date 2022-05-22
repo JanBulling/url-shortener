@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import Link from 'next/link';
-import Shortener from '../components/Shortener';
+import Shortener from '../components/InputShortener';
 import StatsTable from '../components/StatsTable';
 import { ShortenedUrl } from "../lib/types";
 import { getPopular } from '../lib/urls';

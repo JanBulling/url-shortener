@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import Shortener from '../components/shortener';
-import userEvent from '@testing-library/user-event'
+import Shortener from "../components/InputShortener";
+import userEvent from '@testing-library/user-event';
 
 describe('The "Shortener" component', () => {
     afterEach(() => {

@@ -108,7 +108,7 @@ export default function Shortener() {
                 </form>
                 <p className="mt-2 text-gray-400 text-sm">By clicking SHORTEN, we will generate a short version of the given url</p>
                 {
-                    error &&
+                    error && 
                     <div className="mt-2 py-4 bg-red-300 rounded-xl text-center text-sm text-gray-800">
                         <p>{"Unable to shorten link. " + error}</p>
                     </div>
