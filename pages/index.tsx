@@ -35,12 +35,10 @@ export default function Home(props: HomeProps) {
         <div className="py-4 pb-20 px-10">
           <div className="max-w-4xl mx-auto">
             <StatsTable 
-              title='Most visited links'
               isVisits={true}
               stats={props.mostVisited}
             />
             <StatsTable 
-              title='Most shortened links'
               isVisits={false}
               stats={props.mostAttemps}
             />
