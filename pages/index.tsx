@@ -1,10 +1,10 @@
 import { GetServerSideProps } from 'next'
 import Head from 'next/head'
 import Link from 'next/link';
-import Shortener from '../components/shortener';
-import Stats from '../components/stats';
-import ShortenedUrl from '../lib/model/shortened_url';
-import { getPopular } from './api/popular';
+import Shortener from '../components/Shortener';
+import StatsTable from '../components/StatsTable';
+import { ShortenedUrl } from "../lib/types";
+import { getPopular } from '../lib/urls';
 
 interface HomeProps {
   mostVisited: ShortenedUrl[],
@@ -32,11 +32,20 @@ export default function Home(props: HomeProps) {
           </Link>
         </div>
 
-        <Stats 
-          mostVisited={props.mostVisited}
-          mostAttemps={props.mostAttemps}
-        />
-        
+        <div className="py-4 pb-20 px-10">
+          <div className="max-w-4xl mx-auto">
+            <StatsTable 
+              title='Most visited links'
+              isVisits={true}
+              stats={props.mostVisited}
+            />
+            <StatsTable 
+              title='Most shortened links'
+              isVisits={false}
+              stats={props.mostAttemps}
+            />
+          </div>
+        </div>        
       </main>
     </>
   )

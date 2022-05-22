@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next"
-import { getLongUrl } from "../api/long-url";
+import { getLongUrl } from "../lib/urls";
 
 export default function Redirect() {
     return (
@@ -11,9 +11,7 @@ export default function Redirect() {
 
 export const getServerSideProps: GetServerSideProps =async ({ params }) => {
     if (!params || !params.url) {
-        return {
-            props: {}
-        };
+        return { notFound: true };
     }
 
     const shortUrl = params.url as string;
@@ -27,9 +25,7 @@ export const getServerSideProps: GetServerSideProps =async ({ params }) => {
                 permanent: false,
             }
         };
-    } else {
-        return {
-            props: {}
-        };
     }
+     
+    return { notFound: true };
 }
