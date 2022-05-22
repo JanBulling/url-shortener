@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import * as getPopular from '../pages/api/popular';
+import * as getPopular from '../lib/urls';
 import Home, { getServerSideProps } from '../pages/index';
 
 describe('The home page', () => {

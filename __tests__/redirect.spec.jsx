@@ -1,5 +1,5 @@
-import { getServerSideProps } from '../pages/[url]/index';
-import * as longUrl from '../pages/api/long-url';
+import { getServerSideProps } from '../pages/[url]';
+import * as longUrl from '../lib/urls';
 
 describe('Redirect', () => {
     let func;
@@ -38,7 +38,7 @@ describe('Redirect', () => {
         const response = await getServerSideProps({params: {url: "hahiowf"}}); 
         expect(func).toHaveBeenCalled();
         expect(response).toEqual({
-            props: {}
+            notFound: true
         });
     })
 
@@ -46,7 +46,7 @@ describe('Redirect', () => {
         const response = await getServerSideProps({}); 
         expect(func).toHaveBeenCalledTimes(0);
         expect(response).toEqual({
-            props: {}
+            notFound: true
         });
     })
 })
