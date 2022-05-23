@@ -7,6 +7,7 @@ This small url-shortener generates a unique shorter URL of 7 characters. You wil
 - **Deployment**: [Vercel](https://vercel.com)
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/)
 - **Version Control**: [Github](https://github.com/)
+- **Testing**: [Jest](https://jestjs.io/)
 
 
 ## Overview
@@ -16,7 +17,7 @@ This small url-shortener generates a unique shorter URL of 7 characters. You wil
 - `components/*` - React.js components
 - `public/*` - Static assets like images.
 - `styles/*` - Global styles, Tailwing CSS integration
-- `__tests__/*` - Unit tests for core functionaloty. To run, type `npm run test` in the console
+- `__tests__/*` - Unit tests in Jest.js for core functionality. To run, type `npm run test` in the console
 
 ## Api
 Each functionality of the application is also available via api. Base URL: https://url-shortener-jan-bulling.vercel.app/
